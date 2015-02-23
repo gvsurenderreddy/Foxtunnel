@@ -1,15 +1,16 @@
-# Makefile for proxytunnel
+# Makefile for foxtunnel
 #
 # Please uncomment the appropriate settings
 
-name = proxytunnel
-version = $(shell awk 'BEGIN { FS="\"" } /^\#define VERSION / { print $$2 }' config.h)
+name = foxtunnel
+version = 1.0
+#version = $(shell awk 'BEGIN { FS="\"" } /^\#define VERSION / { print $$2 }' config.h)
 
-ifneq ($(wildcard .svn),)
-revision = $(shell svnversion | awk 'BEGIN { RS=":" } { next } END { print $$1 }')
-else
-revision = $(shell echo '$$Revision$$' | sed -e 's/\$$Revision: \([0-9]\+\) \$$$$/\1/')
-endif
+#ifneq ($(wildcard .svn),)
+#revision = $(shell svnversion | awk 'BEGIN { RS=":" } { next } END { print $$1 }')
+#else
+#revision = $(shell echo '$$Revision$$' | sed -e 's/\$$Revision: \([0-9]\+\) \$$$$/\1/')
+#endif
 
 CC = gcc
 CFLAGS = -Wall -O2 -ggdb
@@ -22,11 +23,8 @@ OPTFLAGS += -DHAVE_GETOPT_LONG
 # Comment if you don't have/want ssl
 OPTFLAGS += -DUSE_SSL
 
-# Uncomment to use TLSv1.1 else TLSv1 will be used
-#OPTFLAGS += -DUSE_TLS_v1_1
-
 # Most systems
-OPTFLAGS += -DSETPROCTITLE -DSPT_TYPE=2 #Broken on Cygwin?
+OPTFLAGS += -DSETPROCTITLE -DSPT_TYPE=2 #Comment out for Cygwin...
 
 # Comment if you don't have this flag
 OPTFLAGS += -DSO_REUSEPORT
@@ -77,7 +75,7 @@ OBJ = proxytunnel.o	\
 	ntlm.o		\
 	ptstream.o
 
-.PHONY: all clean docs install
+.PHONY: all clean docs install installdoc
 
 all: proxytunnel # docs
 
@@ -93,6 +91,8 @@ clean:
 
 install:
 	install -Dp -m0755 $(name) $(DESTDIR)$(bindir)/$(name)
+
+installdoc:
 	$(MAKE) -C docs install
 
 .c.o:
