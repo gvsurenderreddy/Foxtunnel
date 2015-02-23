@@ -1,0 +1,6 @@
+Known Issues with foxtunnel
+
+Setproctitle mode 1 only works on openbsd
+Setproctitle mode 2 should work on linux and some other platforms
+Platforms confirmed without setproctitle: CYGWIN
+
